@@ -1,3 +1,12 @@
 module.exports = {
-  lintOnSave: false
-};
+  lintOnSave: false,
+  pluginOptions: {
+    preprocess: {
+      moduleEntry: 'src/views/*/*Main.vue',
+      codeSplitting: false
+    },
+    service: {
+      mock: true
+    }
+  }
+}
