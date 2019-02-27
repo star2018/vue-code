@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <el-select v-model="storageType">
+      <el-select v-model="filter.storageType">
         <el-option
           v-for="type of ['letter', 'number']"
           :key="type"
@@ -9,7 +9,7 @@
           :value="type"
         />
       </el-select>
-      <el-input placeholder="搜索" v-model="keyword" clearable>
+      <el-input placeholder="搜索" v-model="filter.keyword" clearable>
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
     </div>
@@ -36,13 +36,19 @@ export default {
   data() {
     return {
       items: [],
-      keyword: '',
-      storageType: ''
+      filter: {
+        // 对相似特性的数据，进行收敛
+        keyword: '',
+        storageType: ''
+      }
     }
   },
   computed: {
     filteredItems() {
-      const { items, keyword } = this
+      const {
+        items,
+        filter: { keyword }
+      } = this
       const reg = new RegExp(keyword.replace(/[*.?+$^[\](){}|\\]/g, '\\$&'), 'i')
       return items.filter(({ value }) => reg.test(value))
     },
@@ -59,7 +65,8 @@ export default {
         item.checked = false
       }
     },
-    storageType: {
+    // 通过属性路径来观察某个值
+    'filter.storageType': {
       handler(type) {
         this.fetchData(type)
       },
